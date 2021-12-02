@@ -41,7 +41,7 @@ function AppNavbar() {
 
 // This needs to be run before any calls to `query`, `createRecord`, etc.
 initIHPBackend({
-    host: 'PUT YOUR URL HERE, YOU CAN FIND IT IN THE PROJECT API REFERENCE' // <--- TODO
+    host: 'https://bxesqpbxbfenmmazbxxrzvycfvfeseai.di1337.com'
 });
 
 // Redirects to the login page if not logged in already

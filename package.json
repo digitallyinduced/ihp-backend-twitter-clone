@@ -6,17 +6,15 @@
   "type": "module",
   "dependencies": {
     "esbuild": "^0.13.1",
-    "esbuild-serve": "^1.0.1",
-    "ihp-backend": "https://ihpbackend.digitallyinduced.com/ihp-backend.tar.gz?bca3bd6deea53440464d2352e04a5ae95d174eae",
+    "ihp-backend": "https://ihpbackend.digitallyinduced.com/ihp-backend.tar.gz?2df3dad7b6d9ae73e2b7ff6986873224723bc6d0ax",
     "ihp-datasync": "https://gitpkg.now.sh/digitallyinduced/ihp/lib/IHP/DataSync?bca3bd6deea53440464d2352e04a5ae95d174eae",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "serve": "^13.0.2"
+    "react-dom": "^17.0.2"
   },
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "NODE_ENV=development node esbuild.config.js -w",
+    "start": "node server.js",
     "build": "node esbuild.config.js"
   }
 }
