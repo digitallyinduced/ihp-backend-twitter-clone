@@ -1,1 +1,15 @@
 /* Place your app specific CSS here */
+
+.card {
+    width: 100%;
+    border-radius: 0;
+    border-bottom: 0;
+}
+
+.card-body {
+    font-size: 16px;
+}
+
+.container {
+    max-width: 600px;
+}

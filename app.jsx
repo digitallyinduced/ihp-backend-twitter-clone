@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { initIHPBackend, DataSubscription, createRecord, updateRecord, deleteRecord, createRecords } from 'ihp-datasync/ihp-datasync';
 import { query } from 'ihp-datasync/ihp-querybuilder';
 import { useQuery } from 'ihp-datasync/ihp-datasync-react';
-import { ensureIsUser, useCurrentUser, logout } from 'ihp-backend';
+import { ensureIsUser, useCurrentUser, logout, getCurrentUserId } from 'ihp-backend';
 
 function App() {
     // With `useQuery()` you can access your database:
@@ -13,6 +13,13 @@ function App() {
 
     return <div className="container">
         <AppNavbar/>
+
+        <div className="card">
+            <div className="card-body">
+                <NewPost/>
+            </div>
+        </div>
+        <Posts/>
     </div>
 }
 
@@ -23,7 +30,7 @@ function AppNavbar() {
     // This navbar requires bootstrap js helpers for the dropdown
     // If the dropdown is not working, you like removed the bootstrap JS from your index.html
 
-    return <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5">
+    return <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item dropdown">
@@ -37,6 +44,57 @@ function AppNavbar() {
             </ul>
         </div>
     </nav>
+}
+
+function Posts() {
+    // useQuery is realtime and always returns the latest data
+    const posts = useQuery(query('posts').orderBy('createdAt').limit(10));
+
+    // Show loading indicator until data is ready
+    if (posts === null) {
+        return <div>Loading</div>
+    }
+
+    return <div className="d-flex" style={{flexDirection: 'column-reverse', alignItems: 'center'}}>
+        {posts.map(post => <Post post={post} key={post.id}/>)}
+    </div>
+}
+
+function Post({ post }) {
+    const createdAt = new Date(post.createdAt).toLocaleString();
+
+    return <div className="card">
+        <div className="card-body">
+            <p className="card-text">
+                {post.body}
+            </p>
+
+            <p className="card-text text-muted">
+                <small>{createdAt}</small>
+            </p>
+        </div>
+    </div>
+}
+
+function NewPost() {
+    const [body, setBody] = useState('');
+    const onSubmit = event => {
+        event.preventDefault();
+        createRecord('posts', { body, userId: getCurrentUserId() });
+
+        setBody('');
+    }
+    return <form method="POST" action="#" onSubmit={onSubmit}>
+        <div className="form-group">
+            <textarea
+                value={body}
+                onChange={event => setBody(event.target.value)}
+                className="form-control"
+                placeholder="What's new?"
+            />
+        </div>
+        <button type="submit" className="btn btn-primary">Publish</button>
+    </form>
 }
 
 // This needs to be run before any calls to `query`, `createRecord`, etc.
