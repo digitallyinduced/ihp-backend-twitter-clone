@@ -48,7 +48,7 @@ function AppNavbar() {
 
 function Posts() {
     // useQuery is realtime and always returns the latest data
-    const posts = useQuery(query('posts').orderBy('createdAt').limit(10));
+    const posts = useQuery(query('posts').orderBy('createdAt'));
 
     // Show loading indicator until data is ready
     if (posts === null) {
@@ -72,8 +72,29 @@ function Post({ post }) {
             <p className="card-text text-muted">
                 <small>{createdAt}</small>
             </p>
+
+            <LikeButton post={post}/>
         </div>
     </div>
+}
+
+function LikeButton({ post }) {
+    const likes = useQuery(query('likes').filterWhere('postId', post.id));
+
+    function likePost() {
+        createRecord('likes', {
+            userId: getCurrentUserId(),
+            postId: post.id
+        });
+    }
+
+    if (likes === null) {
+        return null; // Still loading
+    }
+
+    return <button className="btn btn-link" onClick={likePost}>
+        ♡ {likes.length}
+    </button>
 }
 
 function NewPost() {
