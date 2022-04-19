@@ -5,16 +5,16 @@
   "main": "index.js",
   "type": "module",
   "dependencies": {
+    "@types/ihp-backend": "https://thin.dev/ShowTypescriptDeclarationFile?typescriptDeclarationFileId=a5292246-a87a-442b-b2b2-8e7ee179c4df&accessToken=vrtzxKGVDIYpUHvzYPRIhytsxfPnqgDJ",
     "esbuild": "^0.13.1",
-    "ihp-backend": "https://ihpbackend.digitallyinduced.com/ihp-backend.tar.gz?2df3dad7b6d9ae73e2b7ff6986873224723bc6d0axxx",
-    "ihp-datasync": "https://gitpkg.now.sh/digitallyinduced/ihp/lib/IHP/DataSync?88fd3e695346b07e7fb720efa8af9dcfcddd757b",
+    "ihp-backend": "*",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "node server.js",
+    "dev": "node server.js",
     "build": "./node_modules/.bin/esbuild --define:process.env.NODE_ENV=\\\"production\\\" app.jsx --bundle --outfile=public/app.js"
   }
 }

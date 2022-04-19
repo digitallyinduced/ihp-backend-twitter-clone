@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom'
-import { initIHPBackend, DataSubscription, createRecord, updateRecord, deleteRecord, createRecords } from 'ihp-datasync/ihp-datasync';
+import { initIHPBackend, createRecord, updateRecord, deleteRecord, createRecords } from 'ihp-datasync/ihp-datasync';
 import { query } from 'ihp-datasync/ihp-querybuilder';
 import { useQuery } from 'ihp-datasync/ihp-datasync-react';
-import { ensureIsUser, useCurrentUser, logout, getCurrentUserId } from 'ihp-backend';
+import { logout, getCurrentUserId } from 'ihp-backend';
+import { IHPBackend, useCurrentUser } from 'ihp-backend/react';
 
 function App() {
     // With `useQuery()` you can access your database:
@@ -11,16 +12,18 @@ function App() {
     //     const todos = useQuery(query('todos').orderBy('createdAt'));
     //
 
-    return <div className="container">
-        <AppNavbar/>
+    return <IHPBackend requireLogin>
+        <div className="container">
+            <AppNavbar/>
 
-        <div className="card">
-            <div className="card-body">
-                <NewPost/>
+            <div className="card">
+                <div className="card-body">
+                    <NewPost/>
+                </div>
             </div>
+            <Posts/>
         </div>
-        <Posts/>
-    </div>
+    </IHPBackend>
 }
 
 function AppNavbar() {
@@ -120,11 +123,8 @@ function NewPost() {
 
 // This needs to be run before any calls to `query`, `createRecord`, etc.
 initIHPBackend({
-    host: 'https://bxesqpbxbfenmmazbxxrzvycfvfeseai.di1337.com'
+    host: 'https://twitter-clone-app.di1337.com'
 });
 
-// Redirects to the login page if not logged in already
-ensureIsUser().then(() => {
-    // Start the React app
-    ReactDOM.render(<App/>, document.getElementById('app'));
-});
+// Start the React app
+ReactDOM.render(<App/>, document.getElementById('app'));
