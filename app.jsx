@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom'
-import { initIHPBackend, createRecord, updateRecord, deleteRecord, createRecords } from 'ihp-datasync/ihp-datasync';
-import { query } from 'ihp-datasync/ihp-querybuilder';
-import { useQuery } from 'ihp-datasync/ihp-datasync-react';
-import { logout, getCurrentUserId } from 'ihp-backend';
-import { IHPBackend, useCurrentUser } from 'ihp-backend/react';
+import { initIHPBackend, createRecord, query, logout } from 'thin-backend';
+import { ThinBackend, useCurrentUser, useQuery } from 'thin-backend/react';
 
 function App() {
     // With `useQuery()` you can access your database:
@@ -12,7 +9,7 @@ function App() {
     //     const todos = useQuery(query('todos').orderBy('createdAt'));
     //
 
-    return <IHPBackend requireLogin>
+    return <ThinBackend requireLogin>
         <div className="container">
             <AppNavbar/>
 
@@ -23,7 +20,7 @@ function App() {
             </div>
             <Posts/>
         </div>
-    </IHPBackend>
+    </ThinBackend>
 }
 
 function AppNavbar() {
@@ -85,10 +82,7 @@ function LikeButton({ post }) {
     const likes = useQuery(query('likes').filterWhere('postId', post.id));
 
     function likePost() {
-        createRecord('likes', {
-            userId: getCurrentUserId(),
-            postId: post.id
-        });
+        createRecord('likes', { postId: post.id });
     }
 
     if (likes === null) {
@@ -104,7 +98,7 @@ function NewPost() {
     const [body, setBody] = useState('');
     const onSubmit = event => {
         event.preventDefault();
-        createRecord('posts', { body, userId: getCurrentUserId() });
+        createRecord('posts', { body });
 
         setBody('');
     }
@@ -123,7 +117,7 @@ function NewPost() {
 
 // This needs to be run before any calls to `query`, `createRecord`, etc.
 initIHPBackend({
-    host: 'https://twitter-clone-app.di1337.com'
+    host: 'https://twitter-clone-app.thinbackend.app'
 });
 
 // Start the React app
